@@ -1,0 +1,59 @@
+{
+  "name": "micboard-pro",
+  "version": "1.0.0",
+  "description": "Professional Soundboard & Mic Controller",
+  "main": "src/main/main.js",
+  "homepage": "./",
+  "scripts": {
+    "start": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "build": "npm run react-build && electron-builder build --win",
+    "electron": "electron ."
+  },
+  "build": {
+    "appId": "com.micboard.pro",
+    "productName": "MicBoard Pro",
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MicBoard Pro",
+      "installerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico"
+    },
+    "files": [
+      "build/**/*",
+      "src/main/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "extends": null,
+    "asar": true,
+    "compression": "maximum"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^29.1.0",
+    "electron-builder": "^24.13.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "wait-on": "^7.2.0"
+  },
+  "browserslist": {
+    "production": ["last 1 electron version"],
+    "development": ["last 1 electron version"]
+  }
+}

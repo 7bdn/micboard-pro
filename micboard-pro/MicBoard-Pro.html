@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MicBoard Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg0:#0a0a0f;
+  --bg1:#111118;
+  --bg2:#1a1a24;
+  --bg3:#22222e;
+  --bg4:#2a2a38;
+  --border:#2e2e3e;
+  --border2:#3a3a50;
+  --purple:#7c5cbf;
+  --purple2:#9b7de8;
+  --purple3:#b99af0;
+  --purple-glow:#5a3fa0;
+  --gray:#8a8a9e;
+  --gray2:#6a6a7e;
+  --gray3:#4a4a5e;
+  --white:#e8e8f0;
+  --white2:#c0c0d0;
+  --green:#4caf82;
+  --red:#e05555;
+  --amber:#d4943a;
+  --text:#d4d4e8;
+  --text2:#9090aa;
+  --text3:#606078;
+}
+html,body{height:100%;overflow:hidden;}
+body{
+  background:var(--bg0);
+  color:var(--text);
+  font-family:'Tajawal',sans-serif;
+  font-size:14px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TITLEBAR */
+.titlebar{
+  height:36px;
+  background:var(--bg1);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  gap:8px;
+  flex-shrink:0;
+  -webkit-app-region:drag;
+  user-select:none;
+}
+.titlebar-logo{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.logo-icon{
+  width:22px;height:22px;
+  background:linear-gradient(135deg,var(--purple),var(--purple2));
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-icon svg{width:14px;height:14px;fill:white;}
+.logo-text{font-size:13px;font-weight:700;color:var(--white);letter-spacing:0.5px;}
+.logo-text span{color:var(--purple3);font-weight:300;}
+.titlebar-spacer{flex:1;}
+.titlebar-menu{display:flex;gap:4px;-webkit-app-region:no-drag;}
+.t-btn{
+  width:30px;height:26px;border:none;background:transparent;
+  cursor:pointer;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text2);transition:all 0.15s;font-size:16px;
+}
+.t-btn:hover{background:var(--bg3);color:var(--white);}
+.t-btn.close:hover{background:#c0392b;color:white;}
+.win-ctrl{width:12px;height:12px;border-radius:50%;display:inline-block;}
+.wc-red{background:#ff5f56;}
+.wc-yellow{background:#febc2e;}
+.wc-green{background:#28c840;}
+
+/* MAIN LAYOUT */
+.app{display:flex;flex:1;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{
+  width:200px;flex-shrink:0;
+  background:var(--bg1);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.sidebar-section{
+  padding:12px 10px 6px;
+  font-size:10px;font-weight:700;
+  color:var(--text3);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 12px;
+  border-radius:6px;
+  margin:1px 6px;
+  cursor:pointer;
+  color:var(--text2);
+  transition:all 0.15s;
+  font-size:13px;
+}
+.nav-item:hover{background:var(--bg3);color:var(--white);}
+.nav-item.active{background:rgba(124,92,191,0.2);color:var(--purple3);border:1px solid rgba(124,92,191,0.3);}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:0.8;}
+.nav-badge{margin-right:auto;background:var(--purple);color:white;font-size:10px;padding:1px 6px;border-radius:10px;}
+
+.profile-switcher{
+  margin:8px;padding:8px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;
+}
+.profile-label{font-size:10px;color:var(--text3);margin-bottom:3px;}
+.profile-name{font-size:13px;color:var(--purple3);font-weight:600;display:flex;align-items:center;justify-content:space-between;}
+.profile-name svg{width:12px;height:12px;opacity:0.6;}
+
+.sidebar-bottom{margin-top:auto;border-top:1px solid var(--border);padding:10px;}
+
+/* MAIN CONTENT */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* TOPBAR */
+.topbar{
+  height:50px;
+  background:var(--bg1);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 16px;gap:12px;
+  flex-shrink:0;
+}
+.search-box{
+  flex:1;max-width:280px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  display:flex;align-items:center;
+  padding:0 10px;gap:8px;
+  transition:border 0.15s;
+}
+.search-box:focus-within{border-color:var(--purple);}
+.search-box svg{width:14px;height:14px;color:var(--text3);flex-shrink:0;}
+.search-box input{
+  background:none;border:none;outline:none;
+  color:var(--text);font-family:'Tajawal',sans-serif;
+  font-size:13px;width:100%;
+}
+.search-box input::placeholder{color:var(--text3);}
+
+.top-actions{display:flex;gap:6px;margin-right:auto;}
+.action-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:7px;
+  border:1px solid var(--border2);
+  background:var(--bg2);
+  color:var(--text2);cursor:pointer;
+  font-size:12px;font-family:'Tajawal',sans-serif;
+  transition:all 0.15s;
+}
+.action-btn:hover{background:var(--bg3);color:var(--white);border-color:var(--purple);}
+.action-btn svg{width:14px;height:14px;}
+.action-btn.primary{background:rgba(124,92,191,0.2);color:var(--purple3);border-color:var(--purple);}
+.action-btn.primary:hover{background:rgba(124,92,191,0.35);}
+
+.master-vol{
+  display:flex;align-items:center;gap:8px;
+  padding:4px 10px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:8px;
+}
+.master-vol svg{width:14px;height:14px;color:var(--purple3);}
+.master-vol span{font-size:11px;color:var(--text3);}
+.master-vol input[type=range]{
+  width:70px;accent-color:var(--purple2);
+  height:4px;cursor:pointer;
+}
+
+/* CONTENT AREA */
+.content{flex:1;display:flex;overflow:hidden;}
+
+/* SOUNDBOARD */
+.soundboard{
+  flex:1;
+  overflow-y:auto;
+  padding:14px;
+}
+.soundboard::-webkit-scrollbar{width:6px;}
+.soundboard::-webkit-scrollbar-track{background:transparent;}
+.soundboard::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
+
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.section-title{
+  font-size:11px;font-weight:700;
+  color:var(--text3);letter-spacing:1px;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+}
+.section-title::before{
+  content:'';display:block;
+  width:3px;height:14px;
+  background:var(--purple);border-radius:2px;
+}
+
+.sounds-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:8px;
+  margin-bottom:20px;
+}
+
+/* SOUND CARD */
+.sound-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  cursor:pointer;
+  transition:all 0.15s;
+  position:relative;
+  overflow:hidden;
+  user-select:none;
+}
+.sound-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:var(--purple);
+  opacity:0;transition:opacity 0.15s;
+}
+.sound-card:hover{background:var(--bg3);border-color:var(--border2);}
+.sound-card:hover::before{opacity:0.6;}
+.sound-card.playing{
+  background:rgba(124,92,191,0.1);
+  border-color:var(--purple);
+}
+.sound-card.playing::before{opacity:1;}
+.sound-card.fav .fav-star{color:var(--amber);opacity:1!important;}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.card-emoji{
+  width:36px;height:36px;
+  background:var(--bg3);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.card-color{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  opacity:0.05;pointer-events:none;
+  border-radius:9px;
+}
+.fav-star{
+  width:16px;height:16px;
+  cursor:pointer;color:var(--text3);opacity:0.4;
+  transition:all 0.15s;flex-shrink:0;
+}
+.fav-star:hover{opacity:1;color:var(--amber);}
+
+.card-name{
+  font-size:12px;font-weight:600;
+  color:var(--white2);
+  line-height:1.3;
+  margin-bottom:4px;
+  overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+}
+.card-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:6px;
+}
+.card-dur{font-size:10px;color:var(--text3);}
+.card-hotkey{
+  font-size:10px;font-family:'JetBrains Mono',monospace;
+  background:var(--bg4);
+  color:var(--purple3);
+  padding:2px 5px;border-radius:4px;
+  border:1px solid var(--border2);
+}
+
+.card-progress{
+  height:2px;background:var(--bg4);border-radius:1px;margin-top:8px;
+  overflow:hidden;
+}
+.card-progress-fill{
+  height:100%;background:var(--purple2);border-radius:1px;
+  width:0%;transition:width 0.1s;
+}
+
+.card-controls{
+  display:flex;gap:4px;margin-top:8px;
+}
+.cc-btn{
+  flex:1;height:22px;border:none;
+  background:var(--bg3);border-radius:4px;
+  cursor:pointer;color:var(--text2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.1s;
+}
+.cc-btn:hover{background:var(--bg4);color:var(--white);}
+.cc-btn svg{width:11px;height:11px;}
+
+/* ADD CARD */
+.add-card{
+  background:transparent;
+  border:1px dashed var(--border2);
+  border-radius:10px;
+  padding:10px;
+  cursor:pointer;
+  transition:all 0.15s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;min-height:120px;
+  color:var(--text3);
+}
+.add-card:hover{border-color:var(--purple);color:var(--purple3);background:rgba(124,92,191,0.05);}
+.add-card svg{width:22px;height:22px;}
+.add-card span{font-size:12px;}
+
+/* RIGHT PANEL */
+.right-panel{
+  width:260px;flex-shrink:0;
+  background:var(--bg1);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.panel-tabs{
+  display:flex;
+  border-bottom:1px solid var(--border);
+}
+.panel-tab{
+  flex:1;padding:10px;
+  text-align:center;font-size:12px;
+  cursor:pointer;color:var(--text3);
+  border-bottom:2px solid transparent;
+  transition:all 0.15s;
+}
+.panel-tab.active{color:var(--purple3);border-bottom-color:var(--purple);}
+.panel-tab:hover{color:var(--white2);}
+
+.panel-body{flex:1;overflow-y:auto;padding:12px;}
+.panel-body::-webkit-scrollbar{width:4px;}
+.panel-body::-webkit-scrollbar-thumb{background:var(--bg4);}
+
+/* MIC SECTION */
+.mic-meter-wrap{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:10px;
+}
+.meter-label{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.meter-label span{font-size:12px;color:var(--text2);}
+.mic-status{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--green);
+}
+.mic-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+.meter-bars{
+  display:flex;gap:2px;align-items:flex-end;
+  height:40px;margin-bottom:6px;
+}
+.meter-bar{
+  flex:1;background:var(--bg4);
+  border-radius:2px;
+  transition:height 0.05s;
+  min-height:4px;
+}
+.meter-bar.active{background:var(--purple2);}
+.meter-bar.warn{background:var(--amber);}
+.meter-bar.peak{background:var(--red);}
+
+.meter-db{
+  font-size:10px;font-family:'JetBrains Mono',monospace;
+  color:var(--purple3);text-align:center;
+}
+
+/* CONTROL ROW */
+.ctrl-row{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0;
+  border-bottom:1px solid var(--border);
+}
+.ctrl-row:last-child{border-bottom:none;}
+.ctrl-label{font-size:12px;color:var(--text2);min-width:80px;}
+.ctrl-row input[type=range]{
+  flex:1;accent-color:var(--purple2);cursor:pointer;
+}
+.ctrl-val{
+  font-size:11px;font-family:'JetBrains Mono',monospace;
+  color:var(--purple3);min-width:35px;text-align:left;
+}
+.toggle-btn{
+  width:36px;height:20px;
+  background:var(--bg4);
+  border-radius:10px;
+  cursor:pointer;
+  position:relative;
+  border:1px solid var(--border2);
+  transition:background 0.2s;
+  flex-shrink:0;
+}
+.toggle-btn::after{
+  content:'';
+  width:14px;height:14px;
+  background:var(--gray);
+  border-radius:50%;
+  position:absolute;
+  top:2px;right:2px;
+  transition:all 0.2s;
+}
+.toggle-btn.on{background:rgba(124,92,191,0.4);border-color:var(--purple);}
+.toggle-btn.on::after{right:auto;left:2px;background:var(--purple3);}
+
+/* FX SECTION */
+.fx-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:10px;margin-bottom:8px;
+}
+.fx-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.fx-name{font-size:12px;font-weight:600;color:var(--white2);}
+
+/* PLAYING NOW */
+.now-playing{
+  background:rgba(124,92,191,0.08);
+  border:1px solid rgba(124,92,191,0.3);
+  border-radius:10px;padding:12px;
+  margin-bottom:10px;
+}
+.np-label{font-size:10px;color:var(--purple3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.np-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:8px;}
+.np-bar{height:3px;background:var(--bg4);border-radius:2px;margin-bottom:6px;overflow:hidden;}
+.np-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple3));border-radius:2px;width:35%;animation:play-anim 8s linear infinite;}
+@keyframes play-anim{0%{width:0%;}100%{width:100%;}}
+.np-time{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.np-controls{display:flex;gap:6px;margin-top:8px;justify-content:center;}
+.np-btn{
+  width:30px;height:30px;border:none;
+  background:var(--bg3);border-radius:50%;
+  cursor:pointer;color:var(--text2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;border:1px solid var(--border2);
+}
+.np-btn:hover{background:var(--bg4);color:var(--white);}
+.np-btn.main{
+  width:36px;height:36px;
+  background:var(--purple);color:white;
+  border-color:var(--purple2);
+}
+.np-btn.main:hover{background:var(--purple2);}
+.np-btn svg{width:13px;height:13px;}
+.np-btn.main svg{width:15px;height:15px;}
+
+/* QUEUE */
+.queue-item{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 8px;border-radius:6px;
+  margin-bottom:4px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  cursor:grab;
+}
+.queue-item:hover{border-color:var(--border2);}
+.qi-num{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;min-width:16px;}
+.qi-name{flex:1;font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.qi-dur{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.qi-del{width:16px;height:16px;cursor:pointer;color:var(--text3);}
+.qi-del:hover{color:var(--red);}
+.qi-del svg{width:12px;height:12px;}
+
+/* STATUS BAR */
+.statusbar{
+  height:26px;
+  background:var(--bg1);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 14px;gap:16px;
+  flex-shrink:0;
+}
+.status-item{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--text3);
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.status-dot.off{background:var(--gray3);}
+.status-dot.warn{background:var(--amber);}
+
+/* STOP ALL BTN */
+.stop-all{
+  margin-right:auto;
+  display:flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:5px;
+  background:rgba(224,85,85,0.15);
+  border:1px solid rgba(224,85,85,0.3);
+  color:var(--red);font-size:11px;cursor:pointer;
+  transition:all 0.15s;font-family:'Tajawal',sans-serif;
+}
+.stop-all:hover{background:rgba(224,85,85,0.25);}
+.stop-all svg{width:11px;height:11px;}
+
+/* HOTKEYS CHIP */
+.hk-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:5px;padding:2px 7px;
+  font-size:10px;font-family:'JetBrains Mono',monospace;
+  color:var(--gray);
+}
+.hk-chip+.hk-chip::before{
+  content:'·';color:var(--text3);
+}
+
+/* MODAL OVERLAY */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.75);
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s;
+}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:14px;
+  padding:20px;
+  width:360px;
+  transform:translateY(20px);
+  transition:transform 0.2s;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+.modal-overlay.show .modal{transform:translateY(0);}
+.modal-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.modal-title svg{color:var(--purple3);}
+.form-group{margin-bottom:12px;}
+.form-label{font-size:12px;color:var(--text2);margin-bottom:5px;display:block;}
+.form-input{
+  width:100%;padding:8px 10px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:7px;color:var(--text);
+  font-family:'Tajawal',sans-serif;font-size:13px;
+  outline:none;transition:border 0.15s;
+}
+.form-input:focus{border-color:var(--purple);}
+.form-select{
+  width:100%;padding:8px 10px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:7px;color:var(--text);
+  font-family:'Tajawal',sans-serif;font-size:13px;
+  outline:none;cursor:pointer;
+}
+.modal-actions{display:flex;gap:8px;margin-top:16px;}
+.modal-btn{
+  flex:1;padding:9px;border-radius:8px;
+  border:none;cursor:pointer;
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;
+  transition:all 0.15s;
+}
+.modal-btn.cancel{background:var(--bg4);color:var(--text2);}
+.modal-btn.cancel:hover{background:var(--bg3);}
+.modal-btn.confirm{background:var(--purple);color:white;}
+.modal-btn.confirm:hover{background:var(--purple2);}
+
+/* NOTIFICATION */
+.notif{
+  position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--bg3);border:1px solid var(--purple);
+  color:var(--white);font-size:13px;
+  padding:8px 16px;border-radius:8px;
+  z-index:200;opacity:0;
+  transition:all 0.25s;pointer-events:none;
+  white-space:nowrap;
+}
+.notif.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* WAVEFORM VIZ */
+.waveform{
+  width:100%;height:36px;
+  background:var(--bg3);border-radius:6px;
+  overflow:hidden;position:relative;margin:6px 0;
+}
+.waveform-canvas{width:100%;height:100%;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
+
+/* TAG */
+.tag{
+  display:inline-block;
+  font-size:10px;padding:1px 7px;
+  border-radius:10px;
+  background:rgba(124,92,191,0.15);
+  color:var(--purple3);
+  border:1px solid rgba(124,92,191,0.2);
+  margin-left:4px;
+}
+
+/* VU METER ANIMATION */
+@keyframes vu{
+  0%,100%{height:30%;}
+  25%{height:80%;}
+  50%{height:55%;}
+  75%{height:90%;}
+}
+</style>
+</head>
+<body>
+
+<!-- TITLEBAR -->
+<div class="titlebar">
+  <div class="titlebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.69 2 6 4.69 6 8v4a6 6 0 0012 0V8c0-3.31-2.69-6-6-6zm0 2c2.21 0 4 1.79 4 4v4a4 4 0 01-8 0V8c0-2.21 1.79-4 4-4zM4.5 11h-1.5a9 9 0 0017 0H18.5c-.75 3.95-4.24 7-8.5 7s-7.75-3.05-8.5-7z"/></svg>
+    </div>
+    <div class="logo-text">MicBoard <span>Pro</span></div>
+  </div>
+  <div class="titlebar-spacer"></div>
+  <div style="display:flex;gap:6px;align-items:center;-webkit-app-region:no-drag">
+    <span style="font-size:10px;color:#4caf82;background:rgba(76,175,130,0.1);border:1px solid rgba(76,175,130,0.2);padding:2px 8px;border-radius:10px;">● مباشر</span>
+    <div style="width:1px;height:16px;background:var(--border);"></div>
+    <div style="display:flex;gap:3px;">
+      <span class="win-ctrl wc-red" title="إغلاق" onclick="window.close&&window.close()"></span>
+      <span class="win-ctrl wc-yellow" title="تصغير"></span>
+      <span class="win-ctrl wc-green" title="تكبير"></span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="profile-switcher" onclick="showNotif('تبديل الملف الشخصي')">
+      <div class="profile-label">الملف الشخصي</div>
+      <div class="profile-name">
+        Gaming Profile
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </div>
+
+    <div class="sidebar-section">التنقل</div>
+    <div class="nav-item active" onclick="setNav(this,'board')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      السبورة الصوتية
+    </div>
+    <div class="nav-item" onclick="setNav(this,'mic')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v7a3 3 0 01-6 0V5a3 3 0 013-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      المايكروفون
+    </div>
+    <div class="nav-item" onclick="setNav(this,'mixer')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      الميكسر
+    </div>
+    <div class="nav-item" onclick="setNav(this,'hotkeys')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/></svg>
+      الاختصارات
+      <span class="nav-badge">12</span>
+    </div>
+    <div class="nav-item" onclick="setNav(this,'profiles')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      الملفات الشخصية
+    </div>
+
+    <div class="sidebar-section">متقدم</div>
+    <div class="nav-item" onclick="setNav(this,'voice')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg>
+      Voice Changer
+    </div>
+    <div class="nav-item" onclick="setNav(this,'rec')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+      التسجيل
+    </div>
+    <div class="nav-item" onclick="setNav(this,'settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      الإعدادات
+    </div>
+
+    <div class="sidebar-bottom">
+      <div style="font-size:10px;color:var(--text3);text-align:center;">MicBoard Pro v2.0.1</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="ابحث عن صوت..." id="searchInput" oninput="filterSounds(this.value)">
+      </div>
+      <div class="top-actions">
+        <button class="action-btn" onclick="showAddModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          إضافة صوت
+        </button>
+        <button class="action-btn" onclick="showNotif('مجلد جديد تم إنشاؤه')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          مجلد جديد
+        </button>
+        <button class="action-btn primary" onclick="toggleVirtualMic()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v7a3 3 0 01-6 0V5a3 3 0 013-3z"/></svg>
+          <span id="vmicLabel">Virtual Mic: تشغيل</span>
+        </button>
+      </div>
+      <div class="master-vol">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+        <span>الكل</span>
+        <input type="range" min="0" max="100" value="80" oninput="updateMasterVol(this.value)">
+        <span style="font-size:11px;color:var(--purple3);font-family:'JetBrains Mono',monospace;" id="masterVolDisplay">80%</span>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <!-- SOUNDBOARD -->
+      <div class="soundboard" id="soundboard">
+        <!-- NOW PLAYING -->
+        <div class="now-playing" id="nowPlaying" style="display:none;">
+          <div class="np-label">▶ يُشغَّل الآن</div>
+          <div class="np-title" id="npTitle">—</div>
+          <div class="np-bar"><div class="np-fill" id="npFill"></div></div>
+          <div class="np-time"><span id="npCurrent">0:00</span><span id="npTotal">0:00</span></div>
+          <div class="np-controls">
+            <button class="np-btn" onclick="stopAllSounds()" title="إيقاف الكل">
+              <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </button>
+            <button class="np-btn" onclick="showNotif('تشغيل السابق')">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 20L9 12l10-8v16zM5 4h2v16H5z"/></svg>
+            </button>
+            <button class="np-btn main" id="npPlayBtn" onclick="toggleNpPlay()">
+              <svg viewBox="0 0 24 24" fill="currentColor" id="npPlayIcon"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+            <button class="np-btn" onclick="showNotif('تشغيل التالي')">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zM19 4h2v16h-2z"/></svg>
+            </button>
+            <button class="np-btn" id="loopBtn" onclick="toggleLoop()" title="تكرار">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- FAVORITES -->
+        <div class="section-header">
+          <div class="section-title">المفضلة<span class="tag">مثبّت</span></div>
+          <button class="action-btn" style="padding:3px 8px;font-size:11px;" onclick="showNotif('تم تحديث المفضلة')">تعديل</button>
+        </div>
+        <div class="sounds-grid" id="favGrid"></div>
+
+        <!-- ALL SOUNDS -->
+        <div class="section-header">
+          <div class="section-title">جميع الأصوات</div>
+          <div style="display:flex;gap:6px;">
+            <button class="action-btn" style="padding:3px 8px;font-size:11px;" onclick="sortSounds('name')">ترتيب: اسم</button>
+            <button class="action-btn" style="padding:3px 8px;font-size:11px;" onclick="showNotif('تم التحديث')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;"><path d="M3 6h18M7 12h10M10 18h4"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="sounds-grid" id="mainGrid"></div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+        <div class="panel-tabs">
+          <div class="panel-tab active" onclick="setPanelTab(this,'mic')">المايك</div>
+          <div class="panel-tab" onclick="setPanelTab(this,'fx')">FX</div>
+          <div class="panel-tab" onclick="setPanelTab(this,'queue')">Queue</div>
+        </div>
+        <div class="panel-body" id="panelBody">
+          <!-- MIC TAB (default) -->
+          <div id="tab-mic">
+            <!-- Meter -->
+            <div class="mic-meter-wrap">
+              <div class="meter-label">
+                <span>مستوى الإدخال</span>
+                <div class="mic-status"><div class="mic-dot"></div>متصل</div>
+              </div>
+              <div class="meter-bars" id="micBars">
+              </div>
+              <div class="meter-db" id="dbMeter">-18 dB</div>
+            </div>
+
+            <!-- Mic select -->
+            <div style="margin-bottom:10px;">
+              <div style="font-size:11px;color:var(--text3);margin-bottom:5px;">جهاز الإدخال</div>
+              <select class="form-select" style="font-size:12px;">
+                <option>Blue Yeti USB Microphone</option>
+                <option>HyperX QuadCast S</option>
+                <option>Realtek HD Audio Input</option>
+              </select>
+            </div>
+
+            <!-- Controls -->
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px;">
+              <div class="ctrl-row">
+                <span class="ctrl-label">مستوى المايك</span>
+                <input type="range" min="0" max="100" value="75" oninput="updateCtrl(this,'micVol')">
+                <span class="ctrl-val" id="micVol">75%</span>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">Mic Boost</span>
+                <input type="range" min="0" max="30" value="10" oninput="updateCtrl(this,'micBoost')">
+                <span class="ctrl-val" id="micBoost">+10dB</span>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">Noise Gate</span>
+                <input type="range" min="-60" max="0" value="-40" oninput="updateCtrl(this,'noiseGate')">
+                <span class="ctrl-val" id="noiseGate">-40dB</span>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">Compressor</span>
+                <input type="range" min="1" max="20" value="4" oninput="updateCtrl(this,'compressor')">
+                <span class="ctrl-val" id="compressor">4:1</span>
+              </div>
+            </div>
+
+            <!-- Toggles -->
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px;margin-top:8px;">
+              <div class="ctrl-row" style="justify-content:space-between;">
+                <span class="ctrl-label">Noise Reduction</span>
+                <div class="toggle-btn on" onclick="toggleFx(this)"></div>
+              </div>
+              <div class="ctrl-row" style="justify-content:space-between;">
+                <span class="ctrl-label">Echo Cancel</span>
+                <div class="toggle-btn on" onclick="toggleFx(this)"></div>
+              </div>
+              <div class="ctrl-row" style="justify-content:space-between;">
+                <span class="ctrl-label">Auto Ducking</span>
+                <div class="toggle-btn" onclick="toggleFx(this)"></div>
+              </div>
+              <div class="ctrl-row" style="justify-content:space-between;">
+                <span class="ctrl-label">Mic Monitor</span>
+                <div class="toggle-btn" onclick="toggleFx(this)"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FX TAB -->
+          <div id="tab-fx" style="display:none;">
+            <div class="fx-card">
+              <div class="fx-header">
+                <span class="fx-name">🎙 Voice Changer</span>
+                <div class="toggle-btn" onclick="toggleFx(this)"></div>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">النوع</span>
+                <select class="form-select" style="font-size:11px;flex:1;">
+                  <option>Deep Voice</option><option>Chipmunk</option><option>Robot</option><option>Echo</option>
+                </select>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">الحدة</span>
+                <input type="range" min="-12" max="12" value="0" oninput="updateCtrl(this,'pitch')">
+                <span class="ctrl-val" id="pitch">0st</span>
+              </div>
+            </div>
+
+            <div class="fx-card">
+              <div class="fx-header">
+                <span class="fx-name">🤖 AI Noise Removal</span>
+                <div class="toggle-btn on" onclick="toggleFx(this)"></div>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">شدة التأثير</span>
+                <input type="range" min="0" max="100" value="80" oninput="updateCtrl(this,'aiNR')">
+                <span class="ctrl-val" id="aiNR">80%</span>
+              </div>
+              <div style="font-size:10px;color:var(--green);margin-top:4px;">● يعمل بشكل مثالي</div>
+            </div>
+
+            <div class="fx-card">
+              <div class="fx-header">
+                <span class="fx-name">🎚 EQ</span>
+                <div class="toggle-btn on" onclick="toggleFx(this)"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;text-align:center;margin-top:4px;">
+                <div v-for="b in ['60','250','1K','4K','16K']">
+                  <input type="range" min="-12" max="12" value="0" style="writing-mode:vertical-lr;height:50px;accent-color:var(--purple2);">
+                  <div style="font-size:9px;color:var(--text3);margin-top:2px;">60</div>
+                </div>
+                <div><input type="range" min="-12" max="12" value="2" style="writing-mode:vertical-lr;height:50px;accent-color:var(--purple2);"><div style="font-size:9px;color:var(--text3);margin-top:2px;">250</div></div>
+                <div><input type="range" min="-12" max="12" value="-1" style="writing-mode:vertical-lr;height:50px;accent-color:var(--purple2);"><div style="font-size:9px;color:var(--text3);margin-top:2px;">1K</div></div>
+                <div><input type="range" min="-12" max="12" value="3" style="writing-mode:vertical-lr;height:50px;accent-color:var(--purple2);"><div style="font-size:9px;color:var(--text3);margin-top:2px;">4K</div></div>
+                <div><input type="range" min="-12" max="12" value="1" style="writing-mode:vertical-lr;height:50px;accent-color:var(--purple2);"><div style="font-size:9px;color:var(--text3);margin-top:2px;">16K</div></div>
+              </div>
+            </div>
+
+            <div class="fx-card">
+              <div class="fx-header">
+                <span class="fx-name">🌊 Reverb</span>
+                <div class="toggle-btn" onclick="toggleFx(this)"></div>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">الحجم</span>
+                <input type="range" min="0" max="100" value="20" oninput="updateCtrl(this,'reverb')">
+                <span class="ctrl-val" id="reverb">20%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUEUE TAB -->
+          <div id="tab-queue" style="display:none;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+              <span>قائمة التشغيل</span>
+              <button class="action-btn" style="padding:2px 8px;font-size:10px;" onclick="clearQueue()">مسح الكل</button>
+            </div>
+            <div id="queueList">
+              <div class="queue-item">
+                <span class="qi-num">1</span>
+                <span class="qi-name">Bruh Sound Effect</span>
+                <span class="qi-dur">0:03</span>
+                <span class="qi-del" onclick="removeQueueItem(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              </div>
+              <div class="queue-item">
+                <span class="qi-num">2</span>
+                <span class="qi-name">MLG Horn</span>
+                <span class="qi-dur">0:05</span>
+                <span class="qi-del" onclick="removeQueueItem(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              </div>
+              <div class="queue-item">
+                <span class="qi-num">3</span>
+                <span class="qi-name">Air Horn</span>
+                <span class="qi-dur">0:02</span>
+                <span class="qi-del" onclick="removeQueueItem(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              </div>
+            </div>
+            <div style="margin-top:10px;padding:8px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+              <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">خيارات</div>
+              <div class="ctrl-row" style="justify-content:space-between;">
+                <span class="ctrl-label">تكرار القائمة</span>
+                <div class="toggle-btn" onclick="toggleFx(this)"></div>
+              </div>
+              <div class="ctrl-row" style="justify-content:space-between;">
+                <span class="ctrl-label">تشغيل عشوائي</span>
+                <div class="toggle-btn" onclick="toggleFx(this)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <button class="stop-all" onclick="stopAllSounds()">
+    <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+    إيقاف الكل (F12)
+  </button>
+  <div class="status-item"><div class="status-dot"></div>Virtual Mic متصل</div>
+  <div class="status-item"><div class="status-dot"></div>Discord متصل</div>
+  <div class="status-item"><div class="status-dot warn"></div>OBS: في الانتظار</div>
+  <div style="margin-right:auto;"></div>
+  <div class="status-item" style="color:var(--text3);">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    تأخر: <span style="color:var(--green);font-family:'JetBrains Mono',monospace;" id="latency">4ms</span>
+  </div>
+  <div class="status-item" style="color:var(--text3);">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+    <span id="soundCount">0</span> صوت
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+      إضافة صوت جديد
+    </div>
+    <div class="form-group">
+      <label class="form-label">اسم الصوت</label>
+      <input class="form-input" type="text" id="newSoundName" placeholder="مثال: Bruh Moment">
+    </div>
+    <div class="form-group">
+      <label class="form-label">الإيموجي / الأيقونة</label>
+      <input class="form-input" type="text" id="newSoundEmoji" placeholder="🎵" maxlength="2" value="🎵">
+    </div>
+    <div class="form-group">
+      <label class="form-label">الاختصار (Hotkey)</label>
+      <input class="form-input" type="text" id="newSoundHotkey" placeholder="F1 أو Ctrl+1">
+    </div>
+    <div class="form-group">
+      <label class="form-label">الفئة</label>
+      <select class="form-select" id="newSoundCat">
+        <option>مؤثرات صوتية</option>
+        <option>ألعاب</option>
+        <option>أغاني</option>
+        <option>إعلام</option>
+        <option>مقاطع صوتية</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="hideModal('addModal')">إلغاء</button>
+      <button class="modal-btn confirm" onclick="addSound()">إضافة ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"></div>
+
+<script>
+// SOUNDS DATA
+const soundsData = [
+  {id:1,name:'Bruh Sound',emoji:'😐',dur:'0:03',hotkey:'F1',color:'#7c5cbf',fav:true,cat:'مؤثرات'},
+  {id:2,name:'Air Horn',emoji:'📯',dur:'0:02',hotkey:'F2',color:'#e05555',fav:true,cat:'مؤثرات'},
+  {id:3,name:'MLG Horn',emoji:'🎺',dur:'0:05',hotkey:'F3',color:'#d4943a',fav:false,cat:'ألعاب'},
+  {id:4,name:'Windows XP Error',emoji:'💻',dur:'0:01',hotkey:'F4',color:'#4caf82',fav:true,cat:'كلاسيك'},
+  {id:5,name:'Vine Boom',emoji:'💥',dur:'0:01',hotkey:'F5',color:'#9b7de8',fav:false,cat:'مؤثرات'},
+  {id:6,name:'GTA Mission',emoji:'🚔',dur:'0:08',hotkey:'F6',color:'#5a9fd4',fav:false,cat:'ألعاب'},
+  {id:7,name:'Sad Violin',emoji:'🎻',dur:'0:06',hotkey:'F7',color:'#c55a9d',fav:false,cat:'موسيقى'},
+  {id:8,name:'Notification',emoji:'🔔',dur:'0:01',hotkey:'F8',color:'#4caf82',fav:false,cat:'إعلام'},
+  {id:9,name:'Laugh Track',emoji:'😂',dur:'0:04',hotkey:'F9',color:'#d4943a',fav:false,cat:'مؤثرات'},
+  {id:10,name:'Ding',emoji:'✨',dur:'0:01',hotkey:'F10',color:'#9b7de8',fav:false,cat:'إعلام'},
+  {id:11,name:'Crowd Cheer',emoji:'👏',dur:'0:05',hotkey:'Ctrl+1',color:'#e05555',fav:false,cat:'مؤثرات'},
+  {id:12,name:'Windows Startup',emoji:'🖥',dur:'0:05',hotkey:'Ctrl+2',color:'#7c5cbf',fav:false,cat:'كلاسيك'},
+];
+
+let playing = new Set();
+let loopEnabled = false;
+let vmicOn = true;
+let nextId = 13;
+
+function renderGrid(){
+  const favGrid = document.getElementById('favGrid');
+  const mainGrid = document.getElementById('mainGrid');
+  const favs = soundsData.filter(s=>s.fav);
+  const all = soundsData;
+  favGrid.innerHTML = favs.map(soundCard).join('');
+  mainGrid.innerHTML = all.map(soundCard).join('')+addCardHTML();
+  document.getElementById('soundCount').textContent = soundsData.length;
+}
+
+function soundCard(s){
+  const isPlaying = playing.has(s.id);
+  return `<div class="sound-card${s.fav?' fav':''}${isPlaying?' playing':''}" id="card-${s.id}" onclick="playSound(${s.id})" draggable="true">
+    <div class="card-color" style="background:${s.color};"></div>
+    <div class="card-top">
+      <div class="card-emoji">${s.emoji}</div>
+      <svg class="fav-star" viewBox="0 0 24 24" fill="${s.fav?'currentColor':'none'}" stroke="currentColor" stroke-width="2" onclick="toggleFav(event,${s.id})"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <div class="card-name">${s.name}</div>
+    <div class="card-meta">
+      <span class="card-dur">${s.dur}</span>
+      <span class="card-hotkey">${s.hotkey}</span>
+    </div>
+    <div class="card-progress"><div class="card-progress-fill" id="prog-${s.id}"></div></div>
+    <div class="card-controls">
+      <button class="cc-btn" onclick="event.stopPropagation();stopSound(${s.id})" title="إيقاف">
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      </button>
+      <button class="cc-btn" onclick="event.stopPropagation();addToQueue(${s.id})" title="إضافة للقائمة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      </button>
+      <button class="cc-btn" onclick="event.stopPropagation();showNotif('تم نسخ الاختصار: '+soundsData.find(x=>x.id===${s.id}).hotkey)" title="الاختصار">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function addCardHTML(){
+  return `<div class="add-card" onclick="showAddModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+    <span>إضافة صوت</span>
+  </div>`;
+}
+
+let progressIntervals = {};
+
+function playSound(id){
+  const s = soundsData.find(x=>x.id===id);
+  if(!s)return;
+  playing.add(id);
+  renderGrid();
+  // Update now playing
+  document.getElementById('nowPlaying').style.display='block';
+  document.getElementById('npTitle').textContent=s.emoji+' '+s.name;
+  document.getElementById('npTotal').textContent=s.dur;
+  // Animate progress
+  clearInterval(progressIntervals[id]);
+  const fill = document.getElementById('prog-'+id);
+  let p=0;
+  const dur = parseDur(s.dur);
+  const interval = setInterval(()=>{
+    p+=100/(dur*20);
+    const el = document.getElementById('prog-'+id);
+    if(el) el.style.width=Math.min(p,100)+'%';
+    if(p>=100){ clearInterval(interval); stopSound(id); }
+  },50);
+  progressIntervals[id]=interval;
+  showNotif('▶ تشغيل: '+s.name);
+}
+
+function parseDur(d){
+  const parts=d.split(':');
+  return parseInt(parts[0])*60+parseInt(parts[1]);
+}
+
+function stopSound(id){
+  playing.delete(id);
+  clearInterval(progressIntervals[id]);
+  const fill = document.getElementById('prog-'+id);
+  if(fill) fill.style.width='0%';
+  renderGrid();
+  if(playing.size===0) document.getElementById('nowPlaying').style.display='none';
+}
+
+function stopAllSounds(){
+  const ids=[...playing];
+  ids.forEach(id=>{ clearInterval(progressIntervals[id]); });
+  playing.clear();
+  renderGrid();
+  document.getElementById('nowPlaying').style.display='none';
+  showNotif('⏹ تم إيقاف جميع الأصوات');
+}
+
+function toggleFav(e,id){
+  e.stopPropagation();
+  const s=soundsData.find(x=>x.id===id);
+  if(s){ s.fav=!s.fav; renderGrid(); showNotif(s.fav?'⭐ أُضيف للمفضلة':'تم إزالته من المفضلة'); }
+}
+
+function toggleNpPlay(){ showNotif('تبديل التشغيل'); }
+function toggleLoop(){
+  loopEnabled=!loopEnabled;
+  const btn=document.getElementById('loopBtn');
+  btn.style.color=loopEnabled?'var(--purple3)':'';
+  showNotif(loopEnabled?'🔁 التكرار مفعّل':'التكرار متوقف');
+}
+
+function filterSounds(q){
+  const lq=q.toLowerCase();
+  const cards=document.querySelectorAll('.sound-card');
+  cards.forEach(c=>{
+    const name=c.querySelector('.card-name').textContent.toLowerCase();
+    c.style.display=name.includes(lq)?'':'none';
+  });
+}
+
+function sortSounds(by){
+  soundsData.sort((a,b)=>a.name.localeCompare(b.name));
+  renderGrid();
+  showNotif('تم الترتيب حسب الاسم');
+}
+
+function setNav(el,section){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  showNotif('القسم: '+el.textContent.trim());
+}
+
+function setPanelTab(el,tab){
+  document.querySelectorAll('.panel-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#panelBody>div').forEach(d=>d.style.display='none');
+  document.getElementById('tab-'+tab).style.display='block';
+}
+
+function updateCtrl(input,id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const v=input.value;
+  if(id==='micVol'||id==='aiNR'||id==='reverb') el.textContent=v+'%';
+  else if(id==='micBoost') el.textContent=(v>0?'+':'')+v+'dB';
+  else if(id==='noiseGate') el.textContent=v+'dB';
+  else if(id==='compressor') el.textContent=v+':1';
+  else if(id==='pitch') el.textContent=(v>0?'+':'')+v+'st';
+}
+
+function toggleFx(btn){
+  btn.classList.toggle('on');
+  showNotif(btn.classList.contains('on')?'تم تفعيل التأثير':'تم إيقاف التأثير');
+}
+
+function toggleVirtualMic(){
+  vmicOn=!vmicOn;
+  document.getElementById('vmicLabel').textContent='Virtual Mic: '+(vmicOn?'تشغيل':'إيقاف');
+  showNotif(vmicOn?'🎙 Virtual Mic مفعّل':'🔇 Virtual Mic متوقف');
+}
+
+function updateMasterVol(v){
+  document.getElementById('masterVolDisplay').textContent=v+'%';
+}
+
+function addToQueue(id){
+  const s=soundsData.find(x=>x.id===id);
+  if(!s)return;
+  const qList=document.getElementById('queueList');
+  const num=qList.children.length+1;
+  const div=document.createElement('div');
+  div.className='queue-item';
+  div.innerHTML=`<span class="qi-num">${num}</span><span class="qi-name">${s.name}</span><span class="qi-dur">${s.dur}</span><span class="qi-del" onclick="removeQueueItem(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></span>`;
+  qList.appendChild(div);
+  showNotif('➕ أُضيف للقائمة: '+s.name);
+}
+
+function removeQueueItem(el){
+  el.closest('.queue-item').remove();
+  showNotif('تم إزالته من القائمة');
+}
+
+function clearQueue(){
+  document.getElementById('queueList').innerHTML='';
+  showNotif('تم مسح القائمة');
+}
+
+function showAddModal(){
+  document.getElementById('addModal').classList.add('show');
+}
+
+function hideModal(id){
+  document.getElementById(id).classList.remove('show');
+}
+
+function addSound(){
+  const name=document.getElementById('newSoundName').value.trim();
+  if(!name){showNotif('⚠ أدخل اسم الصوت');return;}
+  const emoji=document.getElementById('newSoundEmoji').value||'🎵';
+  const hotkey=document.getElementById('newSoundHotkey').value||'—';
+  const colors=['#7c5cbf','#9b7de8','#e05555','#d4943a','#4caf82','#5a9fd4'];
+  const color=colors[Math.floor(Math.random()*colors.length)];
+  soundsData.push({id:nextId++,name,emoji,dur:'0:0'+(Math.floor(Math.random()*9)+1),hotkey,color,fav:false,cat:'مخصص'});
+  renderGrid();
+  hideModal('addModal');
+  document.getElementById('newSoundName').value='';
+  showNotif('✓ تم إضافة: '+name);
+}
+
+function showNotif(msg){
+  const n=document.getElementById('notif');
+  n.textContent=msg;n.classList.add('show');
+  clearTimeout(n._t);
+  n._t=setTimeout(()=>n.classList.remove('show'),2500);
+}
+
+// MIC METER ANIMATION
+function initMicBars(){
+  const bars=document.getElementById('micBars');
+  bars.innerHTML='';
+  for(let i=0;i<28;i++){
+    const b=document.createElement('div');
+    b.className='meter-bar';
+    b.style.height='10%';
+    bars.appendChild(b);
+  }
+}
+
+function animateMeter(){
+  const bars=document.querySelectorAll('.meter-bar');
+  const level=Math.random();
+  const dbVal=Math.round(-60+level*50);
+  document.getElementById('dbMeter').textContent=dbVal+' dB';
+  bars.forEach((b,i)=>{
+    const threshold=level*bars.length;
+    const h=Math.max(8,Math.random()*100*level);
+    b.style.height=h+'%';
+    b.className='meter-bar';
+    if(i<threshold*0.7) b.classList.add('active');
+    else if(i<threshold*0.9) b.classList.add('warn');
+    else if(i<threshold) b.classList.add('peak');
+  });
+  setTimeout(()=>{
+    const latencies=[2,3,4,5,6];
+    document.getElementById('latency').textContent=latencies[Math.floor(Math.random()*latencies.length)]+'ms';
+  },500);
+}
+
+// KEYBOARD SHORTCUTS
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT') return;
+  const key=e.key;
+  if(key==='F12'){e.preventDefault();stopAllSounds();return;}
+  const fKeys={'F1':1,'F2':2,'F3':3,'F4':4,'F5':5,'F6':6,'F7':7,'F8':8,'F9':9,'F10':10};
+  if(fKeys[key]!==undefined){e.preventDefault();playSound(fKeys[key]);}
+  if(key==='Escape') document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('show'));
+});
+
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
+
+// INIT
+initMicBars();
+renderGrid();
+setInterval(animateMeter, 80);
+</script>
+</body>
+</html>
